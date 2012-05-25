@@ -1,0 +1,12 @@
+# Turn on URL rewriting
+RewriteEngine On
+
+# Root
+RewriteBase /
+
+# Display existing files and folders
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite all other requests to index
+RewriteRule .* index.php/$0 [PT,L]
