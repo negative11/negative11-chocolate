@@ -1,0 +1,57 @@
+README
+------
+Welcome to the negative(-11) PHP MVC Framework.
+You are using version 2 (Chocolate).
+
+Features
+--------
+Lightweight MVC PHP Framework.
+Namespace autoloading
+Straightforward and easy to use. No complex setup.
+Free and Open Source.
+Only the basics for MVC. Add more bells and whistles via packages system.
+
+Learn More
+----------
+You should check out the wiki for more information:
+https://github.com/negative11/negative11-chocolate/wiki
+
+There you will find detailed installation and setup instructions.
+
+Requirements
+------------
+PHP Version 5.3+
+Apache Web Server with mod_rewrite enabled (if using included .htaccess file).
+
+Basic Installation
+------------------
+It's very easy to get started.
+
+1. Set application directory as your website root. It is recommended that you keep all other folders
+outside of the public web directory.
+2. Open index.php and modifiy contents. Follow instructions for specifying environment paths and packages.
+3. Open your browser and point to website. If you have everything configured correctly, you should see
+the framework information page.
+4. If you have difficulties, refer to the full installation guide in the wiki.
+
+Common Problems
+---------------
+If you get a 500 error when trying to load the framework, it is possible that mod_rewrite is not enabled. Check your Apache configuration.
+
+If you don't see the framework page, ensure that you specified your paths correctly in index.php, and that the user
+running Apache has the correct permissions to load the files. 
+
+License
+-------
+This framework is dual-licensed under the GPLv3 and/or MIT licenses per your requirements. You may modify it and redistribute it as you wish.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT 
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Additional Help
+---------------
+If you get totally stuck, you can contact the maintainer:
+admin@negative11.com
