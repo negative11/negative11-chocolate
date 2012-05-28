@@ -463,6 +463,39 @@ final class Router
 		// Remove any remaining leading/trailing slashes
 		$current = trim($current, '/');
 		
+		// Check for rewrites matching configuration values.
+		Loader::get('config/rewrite');
+		$matched = $current;
+		if (!empty(\Registry::$config['rewrites']))
+		{
+			foreach (\Registry::$config['rewrites'] as $match => $replace)
+			{
+				$match = trim($match, '/');
+
+				// Exact match?
+				if ($match == $current)
+				{
+					$matched = $replace;
+				}
+				
+				// Regex match?
+				elseif (preg_match('#^'.$match.'$#u', $current))
+				{
+					if (strpos($replace, '$'))
+					{
+						// Replacement requires arguments that were parsed during match.
+						$matched = preg_replace('#^'.$match.'$#u', $replace, $current);
+					}
+					else
+					{
+						// Found match, no parsed arguments required.
+						$matched = $replace;
+					}
+				}
+			}
+		}
+		$current = $matched;
+		
 		$parts = array();
 		if (strlen($current) > 0)
 		{
