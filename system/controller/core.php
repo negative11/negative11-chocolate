@@ -27,7 +27,7 @@ abstract class Core
 	/**
 	 * Initialize local template into View. 
 	 */
-	private function initTemplate()
+	protected function initTemplate()
 	{
 		if ( ! empty($this->template))
 		{
