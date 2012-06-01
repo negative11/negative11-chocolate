@@ -41,6 +41,27 @@ If you get a 500 error when trying to load the framework, it is possible that mo
 If you don't see the framework page, ensure that you specified your paths correctly in index.php, and that the user
 running Apache has the correct permissions to load the files. 
 
+Apache Issues
+-------------
+If you see a 404 page when loading website for the first time, ensure that the ENVIRONMENT_ROOT in index.php is defined to the absolute path of the folder that contains
+the system and packages folders. 
+
+Ensure that mod_rewrite is enabled and that your .htaccess is set to the values provided. 
+
+Your Apache virtual host must be set up to point the accessed domain at the appropriate folder, as the .htaccess file uses '/' as the RewriteBase (@see http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase for more information regarding RewriteBase).
+
+Sample Apache Virtual Host
+--------------------------
+<VirtualHost *:80>
+  DocumentRoot /var/www/example/
+  ServerName example.com
+  <Directory /var/www/example/>
+    allow from all
+    Options +Indexes
+  </Directory>
+</VirtualHost>
+
+
 License
 -------
 This framework is dual-licensed under the GPLv3 and/or MIT licenses per your requirements. You may modify it and redistribute it as you wish.
