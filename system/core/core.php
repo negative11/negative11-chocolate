@@ -163,7 +163,6 @@ final class Core
 			$dump->data = $arguments;
 			$dump->count = count($arguments);
 			$dump->display();
-			ob_flush();
 		}		
 	}
 	
@@ -422,8 +421,8 @@ final class Router
 	 * Values are stored in local static members for use by the core.
 	 */
 	public static function current()
-	{
-		$current = $_SERVER['PHP_SELF'];
+	{		
+		$current = self::getRequestPath();
 		
 		// Are we being run from command line?
 		if (PHP_SAPI === 'cli')
@@ -440,7 +439,7 @@ final class Router
 			}
 			else
 			{
-				$current = $_SERVER['PHP_SELF'];
+				$current = self::getRequestPath();
 			}
 		}
 		
@@ -453,12 +452,12 @@ final class Router
 		// Reduce multiple slashes
 		$current = preg_replace('#//+#', '/', $current);
 		
-		// Remove front controller from URI
-		$current = ltrim
-		(
-			$current, 
-			\Registry::$config['core']['front_controller'] . FILE_EXTENSION
-		);
+		// Remove front controller from URI if present (depends on variable used)
+		$frontController = \Registry::$config['core']['front_controller'] . FILE_EXTENSION;		
+		if (substr($current, 0, (strlen($frontController))) == $frontController)
+		{
+			$current = substr($current, (strlen($frontController)));
+		}
 		
 		// Remove any remaining leading/trailing slashes
 		$current = trim($current, '/');
@@ -538,6 +537,34 @@ final class Router
         {
             self::$method = \Registry::$config['core']['default_controller_method'];
         }        
+	}
+	
+	/**
+	 * Return request path using preferred $_SERVER variable.
+	 * 
+	 * @note You may need to change the variable set in kickstart.php that is used to determine
+	 * the path. Some $_SERVER vars are not consistent across installations, .htaccess files, 
+	 * etc.
+	 */
+	private static function getRequestPath()
+	{		
+		switch (\CORE_SERVER_VAR)
+		{
+			case 'REQUEST_URI':
+				$useVar = strtok($_SERVER['REQUEST_URI'], '?');
+			break;
+			
+			case 'PATH_INFO':
+				$useVar = $_SERVER['PATH_INFO'];
+			break;
+			
+			case 'PHP_SELF':
+			default:
+				$useVar = $_SERVER['PHP_SELF'];
+			break;
+		}
+		
+		return $useVar;
 	}
 	
 	/**
