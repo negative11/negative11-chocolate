@@ -54,8 +54,8 @@ final class Core
 		spl_autoload_register('Core::autoload');
 		
 		// Set custom error/exception handlers
-		//set_error_handler(array('Error', 'handler'));
-		//set_exception_handler(array('Error', 'handler'));
+		set_error_handler(array('Error', 'handler'));
+		set_exception_handler(array('Error', 'handler'));
 		register_shutdown_function(array(__CLASS__, 'shutdown'));		
 				
 		// Provide framework with a session.
