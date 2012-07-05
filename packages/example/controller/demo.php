@@ -7,7 +7,7 @@
 namespace controller;
 
 class Demo extends Core
-{
+{	
 	/**
 	 * Demo lander. Displays a quick greeting and template example. 
 	 */
@@ -35,5 +35,21 @@ class Demo extends Core
 	public function error()
 	{
 		throw new \Exception ('We threw this error on purpose.');
+	}
+	
+	/**
+	 * Demonstrate simple form usage. 
+	 */
+	public function form()
+	{
+		$this->setTemplate('demos/form');
+	}
+	
+	/**
+	 * Processes sample form created by $this->form().
+	 */
+	public function processForm()
+	{
+		\core::dump($_POST, $_GET);
 	}
 }
