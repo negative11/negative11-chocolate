@@ -8,6 +8,14 @@ namespace controller;
 
 class Demo extends Core
 {	
+	public function __construct()
+	{
+		if (IN_PRODUCTION)
+		{
+			throw new \Exception('Disabled in production');
+		}
+	}
+	
 	/**
 	 * Demo lander. Displays a quick greeting and template example. 
 	 */

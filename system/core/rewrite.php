@@ -9,4 +9,4 @@
  * 
  * @sample arraY('/([-a-zA-Z0-9]{4,20})' => 'mycontroller/alphanum/$1'),
  */
-\Registry::$config['rewrites'] = array();
+$config = array();

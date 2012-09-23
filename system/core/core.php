@@ -102,7 +102,13 @@ final class Core
 
 		// Ensure that the controller method is callable		
 		$method = array($object, Router::$method);
-
+		
+		// Ensure that controller is enabled.
+		if ( ! $controller::ENABLED)
+		{
+			throw new \Exception('Controller is disabled.');
+		}
+		
 		if (is_callable($method) && $hidden === FALSE)
 		{
 			// Run controller method
@@ -371,6 +377,16 @@ final class Loader
 	{				
 		foreach (array_reverse(self::$sections) as $section)
 		{
+			// Does file exist in exact case supplied?
+			$filename = ENVIRONMENT_ROOT . '/' . $section . '/' . $file 
+					. FILE_EXTENSION;
+			
+			if (file_exists($filename))
+			{
+				return $filename;
+			}
+						
+			// Does file exist as lowercase?
 			$filename = ENVIRONMENT_ROOT . '/' . $section . '/' . strtolower($file) 
 					. FILE_EXTENSION;
 
@@ -453,7 +469,7 @@ final class Router
 		$current = preg_replace('#//+#', '/', $current);
 		
 		// Remove front controller from URI if present (depends on variable used)
-		$frontController = \Registry::$config['core']['front_controller'] . FILE_EXTENSION;		
+		$frontController = \Config::get('core.front_controller') . FILE_EXTENSION;		
 		if (substr($current, 0, (strlen($frontController))) == $frontController)
 		{
 			$current = substr($current, (strlen($frontController)));
@@ -465,9 +481,10 @@ final class Router
 		// Check for rewrites matching configuration values.
 		Loader::get('config/rewrite');
 		$matched = $current;
-		if (!empty(\Registry::$config['rewrites']))
+		$rewrites = \Config::get('rewrites');
+		if ( ! empty($rewrites))
 		{
-			foreach (\Registry::$config['rewrites'] as $match => $replace)
+			foreach ($rewrites as $match => $replace)
 			{
 				$match = trim($match, '/');
 
@@ -503,7 +520,7 @@ final class Router
 		
         if (empty($parts))
         {
-            self::$controller = \Registry::$config['core']['default_controller'];
+            self::$controller = \Config::get('core.default_controller');
         }
         else 
         {
@@ -535,7 +552,7 @@ final class Router
         
         if (empty(self::$method))
         {
-            self::$method = \Registry::$config['core']['default_controller_method'];
+            self::$method = \Config::get('core.default_controller_method');
         }        
 	}
 	
@@ -629,3 +646,95 @@ final class Singleton
 		}
 	}
 } // End Singleton
+
+/**
+ * Configuration manager.
+ * Loads and caches configuration values from files in config folders.
+ * Methods provide interface for retrieving or overloading configuration values.
+ */
+class Config 
+{		
+	private static $config = array();
+	
+	/**
+	 * Set configuration value.
+	 * Used to cache a value, or override an existing value.
+	 * 
+	 * @param type $key
+	 * @param type $value
+	 */
+	public static function set($key, $value)
+	{
+		// Break on '.' delimiter.
+		$pieces = explode('.', $key);
+		
+		// Set each nested key recursively.
+		$config = &self::$config;
+
+		while (is_string($offset = array_shift($pieces)))
+		{
+			if (count($pieces)) 
+			{
+				$config = &$config[$offset];
+			}
+			else
+			{
+				$config[$offset] = $value;
+			}
+			
+		}
+		
+		unset($config);
+	}
+	
+	/**
+	 * Get configuration value.
+	 * 
+	 * @param type $key
+	 * @return type
+	 */
+	public static function get($key)
+	{			
+		// Break on '.' delimiter.
+		$pieces = explode('.', $key);
+
+		// Everything before the first '.' is a file.
+		$file = array_shift($pieces);
+		if ( ! isset(self::$config[$file])) self::loadConfig($file);
+
+		// Everything remaining '.' is a nested array key. 
+		// For example, a.b.c = $config[a][b][c]
+		$value = isset(self::$config[$file]) ? self::$config[$file] : NULL;
+		while (is_string($offset = array_shift($pieces)))
+		{
+			$value = isset($value[$offset]) ? $value[$offset] : NULL;
+		}
+		
+		return $value;	
+	}
+	
+	/**
+	 * Load configuration file.
+	 * 
+	 * @param type $file
+	 */
+	private static function loadConfig($file)
+	{		
+		$filename = Loader::search('config/' . $file);		
+		
+		if ($filename)
+		{
+			// Fetch valid configuration array.
+			// Cache will prevent multiple includes.
+			// In the event that it does not, honor the load.
+			include($filename);
+				
+			// Cache configuration contents.
+			if (isset($config) && is_array($config))
+			{
+				self::set($file, $config);
+			}
+		}
+	}
+	
+} // End Config.

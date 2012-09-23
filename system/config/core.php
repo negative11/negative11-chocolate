@@ -1,6 +1,6 @@
 <?php
 // Apply system-wide configuration parameters
-\Registry::$config['core'] = array
+$config = array
 (
 	/**
 	 * Front controller file.
@@ -17,16 +17,3 @@
 	'default_controller_method' => 'main',
 );
 
-\Registry::$config['session'] = array
-(
-	// Expiration time in seconds.
-	'lifetime' => 7200,
-	'name' => 'phpsession',
-	'cookie' => array 
-	(
-		'path' => NULL,
-		'domain' => NULL,
-		'secure' => FALSE,
-		'httponly' => FALSE,
-	)
-);

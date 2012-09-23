@@ -13,7 +13,7 @@ class Session
 	 */
 	public function __construct()
 	{
-		$config = \Registry::$config['session'];
+		$config = \Config::get('session');
 		
 		// Set session lifetime.
 		ini_set('session.gc_maxlifetime', $config['lifetime']);
