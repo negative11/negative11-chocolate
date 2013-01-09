@@ -40,7 +40,7 @@
         version 2 (Chocolate)	
 		</p>
 		<h2>Participate</h2>
-		<p>Keep up with the latest framework news via <a href="http://strem.in/profile/view/negative11">strem.in</a>. You are encouraged to join in on 
+		<p>Keep up with the latest framework news via <a href="http://strem.in/profile/negative11">strem.in</a>. You are encouraged to join in on 
 		the discussion and provide feedback or bug reports. If you would like to submit a feature or modification, please contact the <a href="http://johnsquibb.com/contact">maintainer</a></p>
 		<h2>Open Source</h2>
 		<p>This framework is dual-licensed under the GPLv3 and/or MIT licenses per your requirements. You may modify it and redistribute it as you wish.</p>
