@@ -15,6 +15,13 @@ class View
 	protected $_data = array();
 	
 	/**
+	 * Maintains global variables assigned from any namespace and applied to all templates.
+	 * These are applied before template variables, so they may be overloaded via $this->$_data
+	 * on a per-view basis.
+	 */
+	public static $globals = array();
+	
+	/**
 	 * Template to be loaded and output
 	 */
 	protected $template;
@@ -40,6 +47,18 @@ class View
 	public function __set($name, $value)
 	{
 		$this->_data[$name] = $value;
+	}
+	
+	/**
+	 * Set a global variable to be applied to all templates.
+	 * Globals may also be set directly via self::$globals.
+	 * 
+	 * @param
+	 * @return
+	 */
+	public static function set_global($name, $value)
+	{
+		self::$globals[$name] = $value;
 	}
 	
 	/**
@@ -99,7 +118,11 @@ class View
 	{
 		// We need to fetch file manually to allow local variable namespace.
 		$file = $this->loadTemplate();			
+		
+		// Get global and template variables into local namespace.
+		extract(self::$globals);
 		extract($this->_data);
+		
 		require $file;
 		return TRUE;
 	}

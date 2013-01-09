@@ -7,7 +7,7 @@ require_once 'core.php';
 // Add packages to loader section stack
 foreach ($packages as $package)
 {
-	Loader::$sections[] = "packages/{$package}";
+	Loader::$sections[] = 'packages' . DIRECTORY_SEPARATOR . $package;
 }
 unset ($packages);
 

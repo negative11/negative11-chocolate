@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Engine of framework.
  */
 final class Core
-{	
+{
+
 	/**
 	 * When errors occur, we want to ignore any template draws other 
 	 * than our error handlers.
 	 */
 	public static $draw = TRUE;
-	
+
 	/**
 	 * Handles dynamic call of classes.
 	 *
@@ -24,7 +26,7 @@ final class Core
 		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
 		Loader::get($class);
 	}
-	
+
 	/**
 	 * Handles display of 404 Page Not Found errors
 	 */
@@ -32,13 +34,13 @@ final class Core
 	{
 		header('HTTP/1.0 404 Not Found');
 		new \controller\error\_404;
-		
+
 		// Shut all other Views down.
 		// Note: This will not stop controller __destruct from rendering, so use disableAutoDraw().
 		self::$draw = FALSE;
 		exit;
 	}
-	
+
 	/**
 	 * Initialize the framework.
 	 */
@@ -46,22 +48,22 @@ final class Core
 	{
 		// Start buffer
 		ob_start();
-		
+
 		// Get system configuration parameters
-		Loader::get('config/core');
-		
+		Loader::get('config' . DIRECTORY_SEPARATOR . 'core');
+
 		// Register autload function
 		spl_autoload_register('Core::autoload');
-		
+
 		// Set custom error/exception handlers
 		set_error_handler(array('Error', 'handler'));
 		set_exception_handler(array('Error', 'handler'));
-		register_shutdown_function(array(__CLASS__, 'shutdown'));		
-				
+		register_shutdown_function(array(__CLASS__, 'shutdown'));
+
 		// Provide framework with a session.
 		new component\Session;
 	}
-	
+
 	/**
 	 * Run the framework.
 	 * 
@@ -75,16 +77,16 @@ final class Core
 
 		// Load controller if it exists
 		$exists = Loader::get('controller' . DIRECTORY_SEPARATOR . Router::$controller);
-		
+
 		if ($exists)
 		{
 			return self::runController(Router::$controller);
 		}
-		
+
 		// We couldn't find a controller.
-		self::error404();	
+		self::error404();
 	}
-	
+
 	/**
 	 * Execute specified Controller.
 	 * 
@@ -102,24 +104,24 @@ final class Core
 
 		// Ensure that the controller method is callable		
 		$method = array($object, Router::$method);
-		
+
 		// Ensure that controller is enabled.
-		if ( ! $controller::ENABLED)
+		if (!$controller::ENABLED)
 		{
 			throw new \Exception('Controller is disabled.');
 		}
-		
+
 		if (is_callable($method) && $hidden === FALSE)
 		{
 			// Run controller method
-			call_user_func_array($method, Router::$arguments);				
+			call_user_func_array($method, Router::$arguments);
 			return TRUE;
 		}
-				
+
 		// We couldn't load the method.
-		self::error404();		
-	}	 
-	
+		self::error404();
+	}
+
 	/**
 	 * Shut it down.
 	 * Cleans up execution.
@@ -131,7 +133,7 @@ final class Core
 	{
 		// If an error occurred, we'll call our handler.
 		$error = error_get_last();
-		
+
 		if (isset($error))
 		{
 			/*
@@ -139,20 +141,19 @@ final class Core
 			 * Throwing Exception will yield:
 			 * Exception thrown without a stack frame in Unknown on line 0
 			 */
-			Error::handler
-			(
+			Error::handler(
 				$error['type'], 
-				$error['message'],
-				$error['file'],
-				$error['line'],
+				$error['message'], 
+				$error['file'], 
+				$error['line'], 
 				array('Core::shutdown()')
 			);
 		}
-		
+
 		// Flush buffer
 		print ob_get_clean();
-	}	
-	
+	}
+
 	/**
 	 * Dump helper.
 	 * Outputs arbitrary number of arguments with fancy display.
@@ -161,24 +162,27 @@ final class Core
 	 */
 	public static function dump()
 	{
-		if ( ! IN_PRODUCTION)
+		if (!IN_PRODUCTION)
 		{
 			$arguments = func_get_args();
-			
+
 			$dump = new component\View('dump');
 			$dump->data = $arguments;
 			$dump->count = count($arguments);
 			$dump->display();
-		}		
+		}
 	}
-	
-} // End Core
+
+}
+
+// End Core
 
 /**
  * Custom Error and Exception handler
  */
 final class Error
 {
+
 	/**
 	 * Accepts PHP Errors and Exceptions and displays custom debugger.
 	 *
@@ -205,41 +209,29 @@ final class Error
 			{
 				// Errors will supply 2-5 parameters
 				case 5:
-
 					$debugger->context = $args[4];
-
 				case 4:
-
 					$debugger->line_number = $args[3];
-
 				case 3:
-
 					$debugger->file_name = $args[2];
-
 				case 2:
-
 					$debugger->message = $args[1];
 					$debugger->error_type = self::getErrorType($args[0]);
 					$debugger->backtrace = debug_backtrace();
-
 				break;
 
 				// Exceptions will supply only an object
 				case 1:
-
 					$exception = $args[0];
 					$debugger->message = $exception->getMessage();
 					$debugger->file_name = $exception->getFile();
 					$debugger->line_number = $exception->getLine();
 					$debugger->error_type = get_class($exception);
 					$debugger->backtrace = $exception->getTrace();
-
 				break;
 
 				default:
-
-					die ('Invalid number of arguments supplied to Core Exception handler.');
-
+					die('Invalid number of arguments supplied to Core Exception handler.');
 				break;
 			}
 
@@ -258,7 +250,7 @@ final class Error
 
 		exit;
 	}
-	
+
 	/**
 	 * Returns string representation for supplied PHP error constant.
 	 *
@@ -275,50 +267,53 @@ final class Error
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
 				return 'Fatal Error';
-			break;
-			
+				break;
+
 			case E_WARNING:
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
 				return 'Warning';
-			break;
-			
+				break;
+
 			case E_PARSE:
 				return 'Parse Error';
-			break;
-			
+				break;
+
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				return 'Notice';
-			break;	
-			
+				break;
+
 			case E_STRICT:
 				return 'Strict Error';
-			break;
-			
+				break;
+
 			case E_RECOVERABLE_ERROR:
 				return 'Recoverable Error';
-			break;
-			
+				break;
+
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				return 'Deprecated';
-			break;
-			
+				break;
+
 			default:
 				return 'Unknown Error';
-			break;			
+				break;
 		}
 	}
 
-} // End Error
+}
+
+// End Error
 
 /**
  * Fetches files as requested
  */
 final class Loader
-{	
+{
+
 	/**
 	 * Cascade order.
 	 * We will iterate through these when searching for files.
@@ -328,8 +323,8 @@ final class Loader
 	 * default, with additional sections added by configuration or
 	 * throughout initialization.
 	 */
-	public static $sections = array 
-	(
+	public static $sections = array
+		(
 		'system'
 	);
 
@@ -350,10 +345,10 @@ final class Loader
 			self::load($filename);
 			return TRUE;
 		}
-		
+
 		return FALSE;
 	}
-	
+
 	/**
 	 * Loads file.
 	 * 
@@ -374,33 +369,34 @@ final class Loader
 	 * @return bool|string
 	 */
 	public static function search($file)
-	{				
+	{
 		foreach (array_reverse(self::$sections) as $section)
 		{
 			// Does file exist in exact case supplied?
-			$filename = ENVIRONMENT_ROOT . '/' . $section . '/' . $file 
-					. FILE_EXTENSION;
-			
+			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
+				$file	. FILE_EXTENSION;
+
 			if (file_exists($filename))
 			{
 				return $filename;
 			}
-						
+
 			// Does file exist as lowercase?
-			$filename = ENVIRONMENT_ROOT . '/' . $section . '/' . strtolower($file) 
-					. FILE_EXTENSION;
+			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
+				strtolower($file) . FILE_EXTENSION;
 
 			if (file_exists($filename))
 			{
 				return $filename;
 			}
-
 		}
-		
+
 		return FALSE;
 	}
-	
-} // End Loader
+
+}
+
+// End Loader
 
 /**
  * Global Registry for the handling of system-wide variables and 
@@ -408,13 +404,15 @@ final class Loader
  */
 final class Registry
 {
+
 	// All configuration parameters defined in files go here.
 	public static $config = array();
-	
 	// Use this array to store any arbitrary information you like.
 	public static $info = array();
-	
-} // End Registry
+
+}
+
+// End Registry
 
 /**
  * The router determines which controller should be invoked by the 
@@ -422,6 +420,7 @@ final class Registry
  */
 final class Router
 {
+
 	/**
 	 * Components extracted from URI and used by core to load 
 	 * controllers.
@@ -429,7 +428,7 @@ final class Router
 	public static $controller;
 	public static $method;
 	public static $arguments = array();
-	
+
 	/**
 	 * Determines the appropriate controller, method, and arguments 
 	 * from the current URI request.
@@ -437,19 +436,19 @@ final class Router
 	 * Values are stored in local static members for use by the core.
 	 */
 	public static function current()
-	{		
+	{
 		$current = self::getRequestPath();
-		
+
 		// Are we being run from command line?
 		if (PHP_SAPI === 'cli')
-		{							
+		{
 			// $argv and $argc are disabled by default in some configurations.
 			$argc = isset($argc) ? $argc : $_SERVER['argc'];
-			
+
 			if ($argc > 0)
 			{
-				$args = isset($argv) ? $argv : $_SERVER['argv'];				
-				
+				$args = isset($argv) ? $argv : $_SERVER['argv'];
+
 				// Merge all cli arguments as if they were in a uri from web context.
 				$current = implode('/', $args);
 			}
@@ -458,31 +457,30 @@ final class Router
 				$current = self::getRequestPath();
 			}
 		}
-		
+
 		// Remove dot paths
 		$current = preg_replace('#\.[\s./]*/#', '', $current);
-		
+
 		// Remove leading slash
 		$current = ltrim($current, '/');
-		
+
 		// Reduce multiple slashes
 		$current = preg_replace('#//+#', '/', $current);
-		
+
 		// Remove front controller from URI if present (depends on variable used)
-		$frontController = \Config::get('core.front_controller') . FILE_EXTENSION;		
+		$frontController = \Config::get('core.front_controller') . FILE_EXTENSION;
 		if (substr($current, 0, (strlen($frontController))) == $frontController)
 		{
 			$current = substr($current, (strlen($frontController)));
 		}
-		
+
 		// Remove any remaining leading/trailing slashes
 		$current = trim($current, '/');
-		
+
 		// Check for rewrites matching configuration values.
-		Loader::get('config/rewrite');
 		$matched = $current;
 		$rewrites = \Config::get('rewrites');
-		if ( ! empty($rewrites))
+		if (!empty($rewrites))
 		{
 			foreach ($rewrites as $match => $replace)
 			{
@@ -493,14 +491,14 @@ final class Router
 				{
 					$matched = $replace;
 				}
-				
+
 				// Regex match?
-				elseif (preg_match('#^'.$match.'$#u', $current))
+				elseif (preg_match('#^' . $match . '$#u', $current))
 				{
 					if (strpos($replace, '$'))
 					{
 						// Replacement requires arguments that were parsed during match.
-						$matched = preg_replace('#^'.$match.'$#u', $replace, $current);
+						$matched = preg_replace('#^' . $match . '$#u', $replace, $current);
 					}
 					else
 					{
@@ -511,51 +509,51 @@ final class Router
 			}
 		}
 		$current = $matched;
-		
+
 		$parts = array();
 		if (strlen($current) > 0)
 		{
 			$parts = explode('/', $current);
 		}
-		
-        if (empty($parts))
-        {
-            self::$controller = \Config::get('core.default_controller');
-        }
-        else 
-        {
-            $controller = '';
-            while (count($parts))
-            {
-                $controller .= array_shift($parts);
 
-                if (Loader::search("controller/{$controller}"))
-                {
-                    self::$controller = $controller;
+		if (empty($parts))
+		{
+			self::$controller = \Config::get('core.default_controller');
+		}
+		else
+		{
+			$controller = '';
+			while (count($parts))
+			{
+				$controller .= array_shift($parts);
 
-                    if (count($parts))
-                    {
-                        self::$method = array_shift($parts);
-                    }
+				if (Loader::search('controller' . DIRECTORY_SEPARATOR . $controller))
+				{
+					self::$controller = $controller;
 
-                    if (count($parts))
-                    {
-                        self::$arguments = $parts;
-                    }
-                }
-                else
-                {
-                    $controller .= '/';
-                }
-            }
-        }
-        
-        if (empty(self::$method))
-        {
-            self::$method = \Config::get('core.default_controller_method');
-        }        
+					if (count($parts))
+					{
+						self::$method = array_shift($parts);
+					}
+
+					if (count($parts))
+					{
+						self::$arguments = $parts;
+					}
+				}
+				else
+				{
+					$controller .= DIRECTORY_SEPARATOR;
+				}
+			}
+		}
+
+		if (empty(self::$method))
+		{
+			self::$method = \Config::get('core.default_controller_method');
+		}
 	}
-	
+
 	/**
 	 * Return request path using preferred $_SERVER variable.
 	 * 
@@ -564,26 +562,26 @@ final class Router
 	 * etc.
 	 */
 	private static function getRequestPath()
-	{		
+	{
 		switch (\CORE_SERVER_VAR)
 		{
 			case 'REQUEST_URI':
 				$useVar = strtok($_SERVER['REQUEST_URI'], '?');
-			break;
-			
+				break;
+
 			case 'PATH_INFO':
 				$useVar = $_SERVER['PATH_INFO'];
-			break;
-			
+				break;
+
 			case 'PHP_SELF':
 			default:
 				$useVar = $_SERVER['PHP_SELF'];
-			break;
+				break;
 		}
-		
+
 		return $useVar;
 	}
-	
+
 	/**
 	 * Redirect to another location.
 	 * 
@@ -593,10 +591,12 @@ final class Router
 	{
 		header('HTTP/1.1 302 Moved Temporarily');
 		header("Location: {$location}");
-		exit;		
+		exit;
 	}
-	
-} // End Router
+
+}
+
+// End Router
 
 /**
  * Singleton Manager.
@@ -604,16 +604,20 @@ final class Router
  */
 final class Singleton
 {
+
 	/**
 	 * Maintains collection of instantiated classes
 	 */
 	private static $instances = array();
-	
+
 	/**
 	 * Overload constructor
 	 */
-	private function __construct(){}
-	
+	private function __construct()
+	{
+		
+	}
+
 	/**
 	 * Manages instantiation of classes
 	 * 
@@ -622,14 +626,14 @@ final class Singleton
 	 * @return object instance
 	 */
 	public static function instance($class)
-	{		
+	{
 		//instantiate class as necessary
-		self::create($class);	
-		
+		self::create($class);
+
 		//return instance
 		return self::$instances[$class];
 	}
-	
+
 	/**
 	 * Creates the instances
 	 * 
@@ -640,22 +644,26 @@ final class Singleton
 	private static function create($class)
 	{
 		//check if an instance of requested class exists
-		if (!array_key_exists($class , self::$instances))
+		if (!array_key_exists($class, self::$instances))
 		{
 			self::$instances[$class] = new $class;
 		}
 	}
-} // End Singleton
+
+}
+
+// End Singleton
 
 /**
  * Configuration manager.
  * Loads and caches configuration values from files in config folders.
  * Methods provide interface for retrieving or overloading configuration values.
  */
-class Config 
-{		
+class Config
+{
+
 	private static $config = array();
-	
+
 	/**
 	 * Set configuration value.
 	 * Used to cache a value, or override an existing value.
@@ -667,13 +675,13 @@ class Config
 	{
 		// Break on '.' delimiter.
 		$pieces = explode('.', $key);
-		
+
 		// Set each nested key recursively.
 		$config = &self::$config;
 
 		while (is_string($offset = array_shift($pieces)))
 		{
-			if (count($pieces)) 
+			if (count($pieces))
 			{
 				$config = &$config[$offset];
 			}
@@ -681,12 +689,11 @@ class Config
 			{
 				$config[$offset] = $value;
 			}
-			
 		}
-		
+
 		unset($config);
 	}
-	
+
 	/**
 	 * Get configuration value.
 	 * 
@@ -694,13 +701,14 @@ class Config
 	 * @return type
 	 */
 	public static function get($key)
-	{			
+	{
 		// Break on '.' delimiter.
 		$pieces = explode('.', $key);
 
 		// Everything before the first '.' is a file.
 		$file = array_shift($pieces);
-		if ( ! isset(self::$config[$file])) self::loadConfig($file);
+		if (!isset(self::$config[$file]))
+			self::loadConfig($file);
 
 		// Everything remaining '.' is a nested array key. 
 		// For example, a.b.c = $config[a][b][c]
@@ -709,26 +717,26 @@ class Config
 		{
 			$value = isset($value[$offset]) ? $value[$offset] : NULL;
 		}
-		
-		return $value;	
+
+		return $value;
 	}
-	
+
 	/**
 	 * Load configuration file.
 	 * 
 	 * @param type $file
 	 */
 	private static function loadConfig($file)
-	{		
-		$filename = Loader::search('config/' . $file);		
-		
+	{
+		$filename = Loader::search('config' . DIRECTORY_SEPARATOR . $file);
+
 		if ($filename)
 		{
 			// Fetch valid configuration array.
 			// Cache will prevent multiple includes.
 			// In the event that it does not, honor the load.
 			include($filename);
-				
+
 			// Cache configuration contents.
 			if (isset($config) && is_array($config))
 			{
@@ -736,5 +744,7 @@ class Config
 			}
 		}
 	}
-	
-} // End Config.
+
+}
+
+// End Config.
