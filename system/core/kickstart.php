@@ -2,7 +2,11 @@
 /**
  * Kick-starts the framework.
  */
-require_once 'core.php';
+require_once 'Core.php';
+require_once 'Loader.php';
+require_once 'Error.php';
+require_once 'Config.php';
+require_once 'Router.php';
 
 // Add packages to loader section stack
 foreach ($packages as $package)

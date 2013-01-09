@@ -29,15 +29,6 @@ class Demo extends Core
 	}
 	
 	/**
-	 * Shows how to work with basic objects you create.
-	 */
-	public function objects()
-	{
-		// Try to load a model object.
-		$model = new \model\User;
-	}
-	
-	/**
 	 * Demonstrates use of the error debugger. 
 	 */
 	public function error()
