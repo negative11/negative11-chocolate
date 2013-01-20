@@ -19,7 +19,6 @@ final class Core
 	{
 		/**
 		 * All files are loaded by namespace.
-		 * We strtolower to disuade case-sensitive file naming.
 		 */
 		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
 		Loader::get($class);
