@@ -59,9 +59,9 @@ regarding RewriteBase).
 Sample Apache Virtual Host
 --------------------------
 <VirtualHost *:80>
-  DocumentRoot /var/www/example/
+  DocumentRoot /var/www/example/application
   ServerName example.com
-  <Directory /var/www/example/>
+  <Directory /var/www/example/application>
     allow from all
     Options +Indexes
   </Directory>
