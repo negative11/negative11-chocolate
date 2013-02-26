@@ -20,7 +20,17 @@ final class Error
 	{
 		// Exceptions will contain only an object
 		$args = func_get_args();
-
+		
+		/*
+		 * When error reporting is disabled, we do nothing.
+		 * In the case of '@' error control operator, this handler will still be called 
+		 * with an error_reporting level of integer 0.
+		 */
+		if ( ! error_reporting())
+		{
+			return TRUE;
+		}
+		
 		try
 		{
 			// Build debugger
