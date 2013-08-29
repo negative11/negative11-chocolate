@@ -25,18 +25,38 @@ class View
 	 * Template to be loaded and output
 	 */
 	protected $template;
-	
+    
 	/**
-	 * Constructor.
-	 * Brings supplied template into local member where it will await
-	 * a call to display_content.
-	 *
-	 * @param $template
-	 */
-	public function __construct($template)
+   * The adapterType to use for generating view output.
+   * @var type 
+   */
+  protected $adapterType;
+  
+  /**
+   * Where to search for view templates.
+   * @var type 
+   */
+  protected $templateDirectory = 'template';
+  
+	/**
+   * Constructor. 
+   * @param type $template The path to the template file to load
+   * @param type $outputType The generated output type.
+   */
+	public function __construct($template, $outputType = 'html')
 	{
 		$this->template = $template;
+    $this->setAdapterType($outputType);
 	}
+  
+  /**
+   * Set the view adapterType.
+   * @param type $adapterType
+   */
+  public function setAdapterType($adapterType)
+  {
+    $this->adapterType = $adapterType;
+  }
 	
 	/**
 	 * Assigns any template variable to $this->data array
@@ -87,23 +107,13 @@ class View
 		return (bool) array_key_exists($name, $this->_data);
 	}
 	
+  /**
+   * Unset the specified template variable.
+   * @param type $name
+   */
 	public function __unset($name)
 	{
 		unset($this->_data[$name]);
-	}
-	
-	/**
-	 * Load set template.
-	 * 
-	 * @return string File resource
-	 * @throws \Exception 
-	 */
-	private function loadTemplate()
-	{		
-		$file = \Loader::search('template' . DIRECTORY_SEPARATOR . $this->template);		
-		if ( ! $file) throw new \Exception ('Invalid template name: ' . $this->template);
-		
-		return $file;
 	}
 	
 	/**
@@ -116,14 +126,25 @@ class View
 	 */
 	public function display()
 	{
-		// We need to fetch file manually to allow local variable namespace.
-		$file = $this->loadTemplate();			
-		
-		// Get global and template variables into local namespace.
-		extract(self::$globals);
-		extract($this->_data);
-		
-		require $file;
+		// Build the Adapter class path.
+    $className = '\\component\\adapter\\view\\' . ucfirst(strtolower($this->adapterType));
+    if ( ! class_exists($className))
+    {
+      throw new \Exception("Unsupported display type '{$this->adapterType}'");
+    }
+    
+    // Build adapter intput.
+    $input = array(
+      'template' => $this->template,
+      'templateDirectory' => $this->templateDirectory,
+      'globals' => self::$globals,
+      'data' => $this->_data
+    );
+    
+    // Build adapter and generate output.
+    $adapter = new $className($input);
+    $adapter->getOutput();
+    
 		return TRUE;
 	}
 	
