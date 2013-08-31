@@ -12,9 +12,11 @@ class Json extends Template
    */
   public function getOutput()
   {
-    $content = parent::getOutput(); 
+    list($response, $content) = $this->getTemplateOutput(); 
     
+    // Issue encoded response. 
+    // Any rendered data will be ignored.
     header("Content-type: application/json");
-    echo json_encode($content);
+    echo json_encode($response);
   }
 }

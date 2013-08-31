@@ -51,4 +51,39 @@ class Demo extends Core
 	{
 		\core::dump($_POST, $_GET);
 	}
+  
+  /**
+   * Demonstrate the \component\Example adapter.
+   * Also demonstrates JSON output using specialized view adapter.
+   */
+  public function adapter()
+  {
+    // Original input.
+    $input = array(
+      'a' => 1,
+      'b' => 2,
+      'c' => 3
+    );
+    
+    // We want to override and add some values.
+    $altValues = array(
+      'c' => array(4,5,6),
+      'd' => 'hello world'
+    );
+    
+    // Build adapter object.
+    $adapter = new \component\Example($input, $altValues);
+    
+    // Get modified output.
+    $output = $adapter->getOutput();
+    
+    // Attach original, untouched input data.
+    $output['originalValues'] = $adapter->getInput();
+    
+    // Issue JSON response.
+    $view = new \component\View('response', 'json');
+    $view->data = $output;
+    $view->status = 'generated';
+    $view->display();
+  }
 }

@@ -153,13 +153,14 @@ final class Core
 
 	/**
 	 * Dump helper.
-	 * Outputs arbitrary number of arguments with fancy display.
+	 * Outputs any number of supplied arguments with fancy display.
 	 *
 	 * @param ... ... ...
 	 */
 	public static function dump()
 	{
-		if (!IN_PRODUCTION)
+    // Do not display in production mode.
+		if ( ! IN_PRODUCTION)
 		{
 			$arguments = func_get_args();
 
@@ -169,4 +170,28 @@ final class Core
 			$dump->display();
 		}
 	}
+  
+  /**
+   * Outputs any number of supplied arguments using self::dump and exits immediately.
+   * This haults execution of the framework.
+   */
+  public static function fault()
+  {
+    // Get caller in order to report where fault was triggered.
+    $stack = debug_backtrace();
+    $caller = array_shift($stack);
+    
+    // Issue warning. 
+    echo "Core::fault() triggered by {$caller['file']} on line {$caller['line']}.";
+    
+    // Output any arguments received.
+    $arguments = func_get_args();
+    foreach ($arguments as $argument)
+    {
+      self::dump($argument);
+    }
+
+    // Halt.
+    exit;
+  }
 }
