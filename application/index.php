@@ -15,7 +15,9 @@
  */
 
 // Where does the framework live?
-define ('ENVIRONMENT_ROOT', '/var/www/chocolate');
+// Defaults to parent directory containing this folder. 
+// Set it to any absolute path.
+define ('ENVIRONMENT_ROOT', realpath(dirname(__DIR__)));
 
 // Error reporting level
 error_reporting(E_ALL | E_STRICT);
@@ -47,7 +49,7 @@ define ('IN_PRODUCTION', FALSE);
 $packages = array 
 (
 	// Uncomment the following line to enable the example package.
-	// 'example'
+	'example'
 );
 
 // Set your time zone. You may set this in your php.ini and remove this line.
