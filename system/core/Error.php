@@ -77,6 +77,7 @@ final class Error
 		catch (\Exception $e)
 		{
 			print "Error occurred in Framework Exception Handler: " . $e->getMessage();
+			print '. Try issuing a \Core::fault($args) in various places to track it down.';
 		}
 
 		exit;

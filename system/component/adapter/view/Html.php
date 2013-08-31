@@ -11,8 +11,10 @@ class Html extends Template
    */
   public function getOutput()
   {
-    $content = parent::getOutput();
+    list($response, $content) = $this->getTemplateOutput(); 
     
+    // Stream rendered template content.
+    // Returned response is ignored.
     header("Content-type: text/html");
     echo $content;   
   }

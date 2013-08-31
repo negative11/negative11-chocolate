@@ -4,14 +4,14 @@
  */
 namespace component\adapter\view;
 
-class Template extends \component\Adapter
+abstract class Template extends \component\Adapter
 {  
   /**
    * Generate adapter output.
    * Returns generated content.
    * Extend with child class for a specific output type.
    */
-  public function getOutput()
+  protected function getTemplateOutput()
   {
     // We need to fetch file manually to allow local variable namespace.
 		$file = $this->loadTemplate($this->input['templateDirectory'], $this->input['template']);		
@@ -23,10 +23,13 @@ class Template extends \component\Adapter
     extract($this->input['globals']);
     extract($this->input['data']); 
     
-    // Return generated output.
-    require $file;    
+    // Capture any returned data.
+    $response = require $file;    
+    
+    // Capture content rendered by template.
     $content = ob_get_clean();
-		return $content;    
+    
+		return array($response, $content);    
   }
   
   /**
@@ -42,7 +45,7 @@ class Template extends \component\Adapter
     
 		if ($file === FALSE)
     {
-      throw new \Exception ('Invalid template name: ' . $template);
+      throw new \Exception ("Invalid template name: '{$template}'");
     }
     
 		return $file;
