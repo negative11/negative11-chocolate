@@ -1,9 +1,9 @@
 <div style="background-color:#bcd;width:65%;border:2px solid #000;padding:10px;margin:10px auto 10px auto;font-family:courier;">
 <strong>Core Dump
 <br/>
-Generated <?=date('r');?></strong>
+Generated <?php echo date('r');?></strong>
 <br/>
-<strong>Total Objects:<?=$count;?></strong>
+<strong>Total Objects:<?php echo $count;?></strong>
 <hr/>
 <?php
 $styles = array('background-color:#fff;', 'background-color:#ddd;');
