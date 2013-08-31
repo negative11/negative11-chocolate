@@ -130,7 +130,10 @@ class View
     $className = '\\component\\adapter\\view\\' . ucfirst(strtolower($this->adapterType));
     if ( ! class_exists($className))
     {
-      throw new \Exception("Unsupported display type '{$this->adapterType}'");
+      throw new \Exception(
+        "Unsupported display type '{$this->adapterType}'." 
+        . " Create a custom adapter in '/component/adapter/view/' to enable support."
+      );
     }
     
     // Build adapter intput.
