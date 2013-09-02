@@ -48,8 +48,9 @@ define ('IN_PRODUCTION', FALSE);
  */
 $packages = array 
 (
-	// Uncomment the following line to enable the example package.
-	'example'
+	'example',
+  // Uncomment the following line to enable the MySQL package.
+  // 'mysql'
 );
 
 // Set your time zone. You may set this in your php.ini and remove this line.
