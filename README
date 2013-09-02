@@ -9,7 +9,9 @@ Lightweight MVC PHP Framework.
 Namespace autoloading
 Straightforward and easy to use. No complex setup.
 Free and Open Source.
-Only the basics for MVC. Add more bells and whistles via packages system.
+Includes core MVC architecture.
+Includes basic MySQL package.
+Includes basic setup for PHPUnit testing.
 
 Learn More
 ----------
