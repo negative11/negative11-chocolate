@@ -19,14 +19,14 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
     ";
     
     $result = $this->component->query($sql);    
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
   }
   
   public function teardown()
   {
     $sql = "DROP TABLE `example`.`test1`;";
     $result = $this->component->query($sql);
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
   }
   
   public function testCrudWithBinds()
@@ -37,7 +37,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       'tacos'
     );
     
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertEquals(1, $result->getAffected());
     $this->assertEquals(1, $result->getInsertId());
     
@@ -47,7 +47,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       'tacos'
     );
     
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertInstanceOf('mysqli_result', $result->getResult());
     $this->assertEquals(1, $result->getCount());
     
@@ -58,7 +58,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       'tacos'
     );
     
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertEquals(1, $result->getAffected());
     
     // Delete with binds.
@@ -67,7 +67,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       'burritos'
     );
     
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertEquals(1, $result->getAffected());
   }
   
@@ -81,7 +81,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       new helper\mysql\Literal("NOW()")
     );
     
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertEquals(1, $result->getAffected());
     $this->assertEquals(1, $result->getInsertId());
     
@@ -89,7 +89,7 @@ class MysqlComponentTest extends PHPUnit_Framework_TestCase
       "SELECT UNIX_TIMESTAMP(`value`) AS `ts` FROM `test1`"
     );
 
-    $this->assertInstanceOf('component\mysqli\Result', $result);
+    $this->assertInstanceOf('component\mysql\Result', $result);
     $this->assertInstanceOf('mysqli_result', $result->getResult());
     $this->assertEquals(1, $result->getCount());
     $this->assertEquals($timestamp, $result->current()->ts);

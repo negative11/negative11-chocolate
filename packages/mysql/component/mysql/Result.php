@@ -1,11 +1,11 @@
 <?php
 /**
  * Provides interactive result object that utilizes SPL Iterator for 
- * advanced negotiation of the MySQLi result.
+ * advanced negotiation of the MySQL result.
  * 
  * @package mysqli
  */
-namespace component\mysqli;
+namespace component\mysql;
 class Result implements \Iterator
 {
 	/**
