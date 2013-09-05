@@ -50,7 +50,9 @@ $packages = array
 (
 	'example',
   // Uncomment the following line to enable the MySQL package.
-  // 'mysql'
+  // 'mysql',
+  // Uncomment the following line to enable the cURL package.
+  // 'curl',
 );
 
 // Set your time zone. You may set this in your php.ini and remove this line.

@@ -12,7 +12,8 @@ require_once ENVIRONMENT_ROOT . '/system/core/Router.php';
 
 // Add packages to loader section stack
 $packages = array(
-  'mysql'
+  'mysql',
+  'curl'
 );
 
 foreach ($packages as $package)
