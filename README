@@ -31,8 +31,9 @@ It's very easy to get started.
 
 1. Set application directory as your website root. It is recommended that you keep all other folders
 outside of the public web directory.
-2. Open index.php and modifiy contents. Follow instructions for specifying environment paths and 
-packages.
+2. Open parameters.php and modify any desired configuration settings. Follow instructions for specifying environment paths and 
+packages. You may need to change the ENVIRONMENT_ROOT directory in index.php if you placed the application
+directory in a different location than the rest of the framework.
 3. Open your browser and point to website. If you have everything configured correctly, you should 
 see the framework information page.
 4. If you have difficulties, refer to the full installation guide in the wiki.
@@ -73,9 +74,9 @@ Shared Hosting Environments
 ---------------------------
 If you can't seem to load any pages beyond the front page, or if you always see the front page 
 regardless of path, it is possible that $_SERVER['PHP_SELF'] is not set to the expected value. This
-is very common in shared hosting environments. In system/core/kickstart.php you may select a 
-different variable as a workaround (either PATH_INFO or REQUEST_URI). The variable you select
-(PHP_SELF by default) is used to during framework routing to determine which controller should
+is very common in shared hosting environments. In parameters.php you may select a 
+different variable as a workaround (either PATH_INFO or REQUEST_URI) by modifying the CORE_SERVER_VAR parameter. 
+The variable you select (PHP_SELF by default) is used during framework routing to determine which controller should
 be loaded. 
 
 Note that changing the default variable may break usage of the framework via CLI, as the chosen 

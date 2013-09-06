@@ -15,7 +15,7 @@ final class Loader
 	 */
 	public static $sections = array
 	(
-		'system'
+		SYSTEM_DIRECTORY
 	);
 
 	/**
@@ -63,8 +63,7 @@ final class Loader
 		foreach (array_reverse(self::$sections) as $section)
 		{
 			// Does file exist in exact case supplied?
-			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
-				$file	. FILE_EXTENSION;
+			$filename = $section . DIRECTORY_SEPARATOR . $file . FILE_EXTENSION;
 
 			if (file_exists($filename))
 			{
@@ -72,8 +71,7 @@ final class Loader
 			}
 
 			// Does file exist as lowercase?
-			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
-				strtolower($file) . FILE_EXTENSION;
+			$filename = $section . DIRECTORY_SEPARATOR . strtolower($file) . FILE_EXTENSION;
 
 			if (file_exists($filename))
 			{

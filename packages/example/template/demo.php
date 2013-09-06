@@ -8,3 +8,4 @@
 <p><a href="/demo/adapter">Json output using specialized View Adapter.</a></p>
 <p><a href="/demo/error">Throwing errors and displaying debugger.</a></p>
 <p><a href="/sub/nested">Nesting controllers in subdirectories.</a></p>
+<p><a href="/thispagedoesnotexist">This goes nowhere (404 Page).</a></p>
