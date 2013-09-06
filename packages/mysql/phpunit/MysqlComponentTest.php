@@ -1,7 +1,7 @@
 <?php
 
 // Load the PHPUnit framework setup file.
-define ('ENVIRONMENT_ROOT', realpath(dirname(dirname(dirname(__DIR__)))));
+if ( ! defined ('ENVIRONMENT_ROOT')) define ('ENVIRONMENT_ROOT', realpath(dirname(dirname(dirname(__DIR__)))));
 require_once  ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . 'phpunit' . DIRECTORY_SEPARATOR . 'kickstart.php';
 
 class MysqlComponentTest extends PHPUnit_Framework_TestCase
