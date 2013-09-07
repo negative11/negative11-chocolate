@@ -7,7 +7,7 @@
  * Keys are rewrite rules, and values are destination.
  * The rules should be written with preg_match() in mind.
  * 
- * @sample arrau('/([-a-zA-Z0-9]{4,20})' => 'mycontroller/alphanum/$1'),
+ * @sample array('/([-a-zA-Z0-9]{4,20})' => 'mycontroller/alphanum/$1'),
  */
 $config = array
 (
