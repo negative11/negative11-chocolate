@@ -38,13 +38,23 @@ class View
    */
   protected $templateDirectory = 'template';
   
+  /**
+   * The default output type to use when none is supplied to __construct.
+   */
+  const DEFAULT_OUTPUT_TYPE = 'html';
+  
 	/**
    * Constructor. 
    * @param type $template The path to the template file to load
    * @param type $outputType The generated output type.
    */
-	public function __construct($template, $outputType = 'html')
+	public function __construct($template, $outputType = NULL)
 	{
+    if ($outputType === NULL)
+    {
+      $outputType = self::DEFAULT_OUTPUT_TYPE;
+    }
+    
 		$this->template = $template;
     $this->setAdapterType($outputType);
 	}
