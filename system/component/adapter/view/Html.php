@@ -6,6 +6,9 @@ namespace component\adapter\view;
 
 class Html extends Template
 {  
+  // Expects files to be named xyz.html.{FILE_EXTENSION}
+  const TEMPLATE_SUFFIX_PREFIX = '.html';
+  
   /**
    * Renders Html output from content created in parent adapter.
    */
