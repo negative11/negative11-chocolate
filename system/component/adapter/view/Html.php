@@ -18,7 +18,11 @@ class Html extends Template
     
     // Stream rendered template content.
     // Returned response is ignored.
-    header("Content-type: text/html");
+    if ( ! headers_sent())
+    {
+      header("Content-type: text/html");
+    }
+    
     echo $content;   
   }
 }

@@ -29,7 +29,11 @@ final class Core
 	 */
 	public static function error404()
 	{
-		header('HTTP/1.0 404 Not Found');
+    if ( ! headers_sent())
+		{
+      header('HTTP/1.0 404 Not Found');
+    }
+    
 		new \controller\error\_404;
 
 		// Shut all other Views down.

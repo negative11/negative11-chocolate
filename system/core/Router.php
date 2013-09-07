@@ -173,8 +173,12 @@ final class Router
 	 */
 	public static function redirect($location = '/')
 	{
-		header('HTTP/1.1 302 Moved Temporarily');
-		header("Location: {$location}");
+    if ( ! headers_sent())
+    {
+      header('HTTP/1.1 302 Moved Temporarily');
+      header("Location: {$location}");
+    }
+    
 		exit;
 	}
 }

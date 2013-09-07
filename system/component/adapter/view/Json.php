@@ -19,7 +19,11 @@ class Json extends Template
     
     // Issue encoded response. 
     // Any rendered data will be ignored.
-    header("Content-type: application/json");
+    if ( ! headers_sent())
+    {
+      header("Content-type: application/json");
+    }
+    
     echo json_encode($response);
   }
 }
