@@ -55,9 +55,46 @@ define('SYSTEM_DIRECTORY', ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . 'system');
 define('SYSTEM_CORE_DIRECTORY', SYSTEM_DIRECTORY . DIRECTORY_SEPARATOR . 'core');
 
 /**
+ * Core configuration paramters.
+ * - Front controller.
+ * - Default controller loaded.
+ * - Default controller method when none is provided.
+ */
+define('FRONT_CONTROLLER', 'index');
+define('DEFAULT_CONTROLLER', 'temp');
+define('DEFAULT_CONTROLLER_METHOD', 'main');
+
+/**
  * The $_SERVER variable the framework should use to determine translated path.
  * This may need to be changed based on your server/Apache/mod_rewrite settings. 
  * Options: PHP_SELF, PATH_INFO, REQUEST_URI. 
  * @note that this may affect your ability to run the framework via command line.
  */
 define('CORE_SERVER_VAR', 'PHP_SELF');
+
+/**
+ * The root domain name by which this site is known.
+ * e.g. mywebsite.com
+ * Do not include the protocol (http://, ...).
+ */
+define('BASE_DOMAIN_NAME', 'yourproject.domain');
+
+/**
+ * MySQL connection parameters.
+ */
+define('MYSQL_HOST', 'localhost');
+define('MYSQL_USERNAME', 'username');
+define('MYSQL_PASSWORD', 'password');
+define('MYSQL_DATABASE', 'example');
+define('MYSQL_PORT', 3306);
+define('MYSQL_SOCKET', NULL);
+
+/**
+ * Session lifetime/cookie parameters.
+ */
+define('SESSION_LIFETIME', 7200);
+define('SESSION_NAME', 'project-session');
+define('SESSION_PATH', '/');
+define('SESSION_DOMAIN', '.' . BASE_DOMAIN_NAME);
+define('SESSION_SECURE', FALSE);
+define('SESSION_HTTP_ONLY', FALSE);

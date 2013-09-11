@@ -55,6 +55,30 @@ class Curl
 
     return self::send($options + $defaults);
   }
+  /**
+   * Send a POST request using cURL and JSON-encode parameter array.
+   * Sends appropriate JSON headers to complete transaction.
+   * @param string $url to request
+   * @param array $post POST data to send
+   * @param array $options for cURL
+   * @return string
+   */
+  public static function postJson($url, array $post = array(), array $options = array())
+  {
+    $json = json_encode($post);
+    
+    $defaults = array(
+      CURLOPT_URL => $url,
+      CURLOPT_POST => TRUE,
+      CURLOPT_POSTFIELDS => $json,
+      CURLOPT_HEADER => FALSE,
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_TIMEOUT => self::CONNECTION_TIMEOUT,
+      CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Accept: application/json')
+    );
+
+    return self::send($options + $defaults);
+  }
 
   /**
    * Send a PUT request using cURL.
