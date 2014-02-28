@@ -35,7 +35,7 @@ define ('IN_PRODUCTION', FALSE);
  */
 $packages = array 
 (
-	'example',
+  'example',
   'mysql',
   'curl',
 );
@@ -61,7 +61,7 @@ define('SYSTEM_CORE_DIRECTORY', SYSTEM_DIRECTORY . DIRECTORY_SEPARATOR . 'core')
  * - Default controller method when none is provided.
  */
 define('FRONT_CONTROLLER', 'index');
-define('DEFAULT_CONTROLLER', 'temp');
+define('DEFAULT_CONTROLLER', 'hello');
 define('DEFAULT_CONTROLLER_METHOD', 'main');
 
 /**
@@ -77,7 +77,7 @@ define('CORE_SERVER_VAR', 'PHP_SELF');
  * e.g. mywebsite.com
  * Do not include the protocol (http://, ...).
  */
-define('BASE_DOMAIN_NAME', 'yourproject.domain');
+define('BASE_DOMAIN_NAME', 'calendar.home');
 
 /**
  * MySQL connection parameters.
