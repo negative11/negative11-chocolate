@@ -77,7 +77,7 @@ define('CORE_SERVER_VAR', 'PHP_SELF');
  * e.g. mywebsite.com
  * Do not include the protocol (http://, ...).
  */
-define('BASE_DOMAIN_NAME', 'calendar.home');
+define('BASE_DOMAIN_NAME', 'yourproject.domain');
 
 /**
  * MySQL connection parameters.
