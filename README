@@ -56,7 +56,8 @@ Ensure that mod_rewrite is enabled and that your .htaccess is set to the values 
 Your Apache virtual host must be set up to point the accessed domain at the appropriate folder, as 
 the .htaccess file uses '/' as the RewriteBase 
 (@see http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase for more information 
-regarding RewriteBase).
+regarding RewriteBase). 
+You must set the AllowOverride All directive to enable .htaccess for the project.
 
 Sample Apache Virtual Host
 --------------------------
@@ -64,6 +65,7 @@ Sample Apache Virtual Host
   DocumentRoot /var/www/example/application
   ServerName example.com
   <Directory /var/www/example/application>
+  	AllowOverride All
     allow from all
     Options +Indexes
   </Directory>
