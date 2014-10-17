@@ -3,10 +3,6 @@
  * Simple CRUD model for create, read, update, delete of single rows.  
  * Can be used directly, but is typically extended by another model to add 
  * methods to its base.
- * 
- * @package 
- * @subpackage 
- * @copyright johnsquibb.com
  */
 namespace model;
 abstract class Crud

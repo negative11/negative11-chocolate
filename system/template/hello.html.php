@@ -42,7 +42,6 @@
         version 2 (Chocolate)	
 		</p>
     <h2>Participate</h2>
-    <p>Keep up with the latest framework news via the mini-blogging platform <a href="http://strem.in/profile/negative11">strem.in</a>, a website written using this framework</p>
     <p>You are encouraged to join in on the discussion and provide feedback or bug reports. Please report all issues on <a href="https://github.com/negative11/negative11-chocolate/issues">GitHub</a>.</p>
 		<h2>Open Source</h2>
 		<p>This framework is dual-licensed under the GPLv3 and/or MIT licenses per your requirements. You may modify it and redistribute it as you wish.</p>

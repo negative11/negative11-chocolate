@@ -18,9 +18,12 @@ class Session
 		// Set session lifetime.
 		ini_set('session.gc_maxlifetime', $config['lifetime']);
 		
+    // Set the session cookie name.
+    session_name($config['name']);
+    
 		// Set basic session cookie parameters.
 		$cookie = $config['cookie'];
-		
+    
 		session_set_cookie_params
 		(
 			$config['lifetime'],

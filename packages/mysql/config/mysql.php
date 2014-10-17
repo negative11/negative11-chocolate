@@ -2,11 +2,11 @@
 // Default MySQL connection parameters.
 $config = array(
   'default' => array(
-    'host' => 'localhost',
-    'username' => 'username',
-    'password' => 'password',
-    'database' => 'example',
-    'port' => 3306,
-    'socket' => NULL
+    'host' => MYSQL_HOST,
+    'username' => MYSQL_USERNAME,
+    'password' => MYSQL_PASSWORD,
+    'database' => MYSQL_DATABASE,
+    'port' => MYSQL_PORT,
+    'socket' => MYSQL_SOCKET
   )
 );

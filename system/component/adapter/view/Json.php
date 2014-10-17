@@ -6,6 +6,9 @@ namespace component\adapter\view;
 
 class Json extends Template
 {  
+  // Expects files to be named xyz.json.{FILE_EXTENSION}
+  const TEMPLATE_SUFFIX_PREFIX = '.json';
+  
   /**
    * Generate adapter output.
    * Renders JSON data from generated template data in parent adapter.
@@ -16,7 +19,11 @@ class Json extends Template
     
     // Issue encoded response. 
     // Any rendered data will be ignored.
-    header("Content-type: application/json");
+    if ( ! headers_sent())
+    {
+      header("Content-type: application/json");
+    }
+    
     echo json_encode($response);
   }
 }

@@ -41,13 +41,26 @@ abstract class Template extends \component\Adapter
    */
 	private function loadTemplate($templateDirectory, $template)
 	{		
-		$file = \Loader::search($templateDirectory . DIRECTORY_SEPARATOR . $template);		
+    // Get type-specific suffix prefix.
+    $suffixPrefix = $this->getSuffixPrefix();
+    
+    $path = $templateDirectory . DIRECTORY_SEPARATOR . $template . $suffixPrefix . FILE_EXTENSION;
+		$file = \Loader::search($path, FALSE);		
     
 		if ($file === FALSE)
     {
-      throw new \Exception ("Invalid template name: '{$template}'");
+      throw new \Exception ("Invalid template name: '{$template}'. Could not find file '{$path}'.");
     }
     
 		return $file;
 	}
+  
+  /**
+   * Get the suffix prefix for extending type.
+   * @return type
+   */
+  private function getSuffixPrefix()
+  {
+    return static::TEMPLATE_SUFFIX_PREFIX;
+  }
 }

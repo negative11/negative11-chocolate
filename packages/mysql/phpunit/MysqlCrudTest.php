@@ -1,8 +1,8 @@
 <?php
 
 // Load the PHPUnit framework setup file.
-define ('ENVIRONMENT_ROOT', realpath(dirname(dirname(dirname(__DIR__)))));
-require_once  ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . 'phpunit' . DIRECTORY_SEPARATOR . 'kickstart.php';
+if ( ! defined ('ENVIRONMENT_ROOT')) define ('ENVIRONMENT_ROOT', realpath(dirname(dirname(dirname(__DIR__)))));
+require_once  ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . 'phpunit' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 class MysqlCrudTest extends PHPUnit_Framework_TestCase
 {  

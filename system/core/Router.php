@@ -141,13 +141,13 @@ final class Router
 	/**
 	 * Return request path using preferred $_SERVER variable.
 	 * 
-	 * @note You may need to change the variable set in kickstart.php that is used to determine
+	 * @note You may need to change the variable set in parameters.php that is used to determine
 	 * the path. Some $_SERVER vars are not consistent across installations, .htaccess files, 
 	 * etc.
 	 */
 	private static function getRequestPath()
 	{
-		switch (\CORE_SERVER_VAR)
+		switch (CORE_SERVER_VAR)
 		{
 			case 'REQUEST_URI':
 				$useVar = strtok($_SERVER['REQUEST_URI'], '?');
@@ -173,8 +173,12 @@ final class Router
 	 */
 	public static function redirect($location = '/')
 	{
-		header('HTTP/1.1 302 Moved Temporarily');
-		header("Location: {$location}");
+    if ( ! headers_sent())
+    {
+      header('HTTP/1.1 302 Moved Temporarily');
+      header("Location: {$location}");
+    }
+    
 		exit;
 	}
 }

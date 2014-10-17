@@ -15,7 +15,7 @@ final class Loader
 	 */
 	public static $sections = array
 	(
-		'system'
+		SYSTEM_DIRECTORY
 	);
 
 	/**
@@ -50,21 +50,26 @@ final class Loader
 	}
 
 	/**
-	 * Searches for supplied file in folder of supplied type.
+   * Searches for supplied file in folder of supplied type.
 	 * If found, returns the path of the found file, which can then be
 	 * loaded.
-	 *
-	 * @static
-	 * @param $file
-	 * @return bool|string
-	 */
-	public static function search($file)
+   * @param type $file
+   * @param type $appendDefaultExtension
+   * @return string|boolean
+   */
+	public static function search($file, $appendDefaultExtension = TRUE)
 	{
+    // Use default extension as directed.
+    $extension = NULL;
+    if ($appendDefaultExtension === TRUE)
+    {
+      $extension = FILE_EXTENSION;
+    }
+    
 		foreach (array_reverse(self::$sections) as $section)
 		{
 			// Does file exist in exact case supplied?
-			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
-				$file	. FILE_EXTENSION;
+			$filename = $section . DIRECTORY_SEPARATOR . $file . $extension;
 
 			if (file_exists($filename))
 			{
@@ -72,8 +77,7 @@ final class Loader
 			}
 
 			// Does file exist as lowercase?
-			$filename = ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . $section . DIRECTORY_SEPARATOR . 
-				strtolower($file) . FILE_EXTENSION;
+			$filename = $section . DIRECTORY_SEPARATOR . strtolower($file) . $extension;
 
 			if (file_exists($filename))
 			{

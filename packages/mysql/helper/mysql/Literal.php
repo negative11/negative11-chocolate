@@ -3,10 +3,7 @@
  * Allows supplied string to be output directly during
  * query binding.
  * 
- * Useful when a MySQL function needs to be used.  
- * 
- * @package mysql
- * @copyright negative(-11) Framework
+ * Useful when a MySQL function needs to be used.
  */
 namespace helper\mysql;
 class Literal

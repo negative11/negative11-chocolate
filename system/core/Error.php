@@ -71,7 +71,12 @@ final class Error
 
 			// Show error
 			Core::$draw = FALSE;
-			header('HTTP/1.1 500 Internal Server Error');
+      
+      if ( ! headers_sent())
+      {
+        header('HTTP/1.1 500 Internal Server Error');
+      }
+      
 			$debugger->display();
 		}
 		catch (\Exception $e)

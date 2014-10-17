@@ -2,13 +2,13 @@
 $config = array
 (
 	// Expiration time in seconds.
-	'lifetime' => 7200,
-	'name' => 'phpsession',
+	'lifetime' => SESSION_LIFETIME,
+	'name' => SESSION_NAME,
 	'cookie' => array 
 	(
-		'path' => NULL,
-		'domain' => NULL,
-		'secure' => FALSE,
-		'httponly' => FALSE,
+		'path' => SESSION_PATH,
+		'domain' => SESSION_DOMAIN,
+		'secure' => SESSION_SECURE,
+		'httponly' => SESSION_HTTP_ONLY,
 	)
 );
