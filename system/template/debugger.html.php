@@ -20,7 +20,7 @@
 			<h1>Framework Error</h1>
 			<?php	if (IN_PRODUCTION): // Hide errors in production mode ?>
 				<p style="color:#bb0000;font-weight:bold;">An error has occurred. Please contact the site administrator for further assistance.</p>
-      <? else: ?>	
+      <?php else: ?>	
 			<p style="color:#bb0000;font-weight:bold;"><strong><?php echo $message;?></strong></p>
 			<p><strong>Line Number: </strong><?php echo $line_number;?></p>
 			<p><strong>File Name: </strong><?php echo $file_name;?></p>
