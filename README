@@ -66,7 +66,7 @@ Sample Apache Virtual Host
   DocumentRoot /var/www/example/application
   ServerName example.com
   <Directory /var/www/example/application>
-  	AllowOverride All
+    AllowOverride All
     allow from all
     Options +Indexes
   </Directory>
