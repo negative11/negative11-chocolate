@@ -63,8 +63,8 @@ final class Core
   public static function initializeErrorHandler()
   {
     // Set custom error/exception handlers
-		set_error_handler(array('Error', 'handler'));
-		set_exception_handler(array('Error', 'handler'));
+		set_error_handler(array('FrameworkError', 'handler'));
+		set_exception_handler(array('FrameworkError', 'handler'));
 		register_shutdown_function(array(__CLASS__, 'shutdown'));
   }
 
@@ -145,7 +145,7 @@ final class Core
 			 * Throwing Exception will yield:
 			 * Exception thrown without a stack frame in Unknown on line 0
 			 */
-			Error::handler(
+			FrameworkError::handler(
 				$error['type'], 
 				$error['message'], 
 				$error['file'], 
