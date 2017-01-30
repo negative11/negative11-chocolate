@@ -2,7 +2,7 @@
 /**
  * Custom Error and Exception handler.
  */
-final class Error
+final class FrameworkError
 {
 	/**
 	 * Accepts PHP Errors and Exceptions and displays custom debugger.

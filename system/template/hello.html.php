@@ -35,7 +35,7 @@
     <p><a href="/demo">View the Demo page</a> provided by the example package, which is enabled by default after installation.</p>
 		<h2>About</h2>
 		<p>
-		&copy; Copyright 2013 negative(-11) PHP Framework
+		&copy; Copyright 2011-2017 negative(-11) PHP Framework
         <br>
         Created and maintained by John Squibb
         <br>

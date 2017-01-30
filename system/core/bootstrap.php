@@ -6,7 +6,7 @@
 // Load framework assets.
 require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'Core.php';
 require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'Loader.php';
-require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'Error.php';
+require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'FrameworkError.php';
 require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'Config.php';
 require_once SYSTEM_CORE_DIRECTORY . DIRECTORY_SEPARATOR . 'Router.php';
 
