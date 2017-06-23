@@ -4,16 +4,13 @@
  * that it is alive.
  */
 namespace controller;
-class Hello extends \controller\Core
-{	
+class Hello extends \controller\Core {
 	/**
-	 * Constructor. 
+	 * Constructor.
 	 */
-	public function __construct()
-	{				
+	public function __construct() {
 		// Disabled in production
-		if (IN_PRODUCTION === TRUE)
-		{
+		if (IN_PRODUCTION === TRUE) {
 			\Core::error404();
 		}
 	}
@@ -21,8 +18,7 @@ class Hello extends \controller\Core
 	/**
 	 * Say hello to the framework.
 	 */
-	public function main()
-	{
+	public function main() {
 		$this->setTemplate('hello');
 	}
 }

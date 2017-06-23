@@ -25,13 +25,13 @@ class View
 	 * Template to be loaded and output
 	 */
 	protected $template;
-    
+	
 	/**
    * The adapterType to use for generating view output.
    * @var type 
    */
-  protected $adapterType;
-  
+	protected $adapterType;
+	
   /**
    * Where to search for view templates.
    * @var type 
@@ -50,24 +50,24 @@ class View
    */
 	public function __construct($template, $outputType = NULL)
 	{
-    if ($outputType === NULL)
-    {
-      $outputType = self::DEFAULT_OUTPUT_TYPE;
-    }
-    
+		if ($outputType === NULL)
+		{
+			$outputType = self::DEFAULT_OUTPUT_TYPE;
+		}
+		
 		$this->template = $template;
-    $this->setAdapterType($outputType);
+		$this->setAdapterType($outputType);
 	}
-  
+	
   /**
    * Set the view adapterType.
    * @param type $adapterType
    */
   public function setAdapterType($adapterType)
   {
-    $this->adapterType = $adapterType;
+  	$this->adapterType = $adapterType;
   }
-	
+  
 	/**
 	 * Assigns any template variable to $this->data array
 	 * 
@@ -118,11 +118,11 @@ class View
    * Unset the specified template variable.
    * @param type $name
    */
-	public function __unset($name)
-	{
-		unset($this->_data[$name]);
-	}
-	
+  public function __unset($name)
+  {
+  	unset($this->_data[$name]);
+  }
+  
 	/**
 	 * Generates template output.
 	 * Extracts $this->_data into local namespace so that it can be
@@ -133,27 +133,27 @@ class View
 	public function display()
 	{
 		// Build the Adapter class path.
-    $className = '\\component\\adapter\\view\\' . ucfirst(strtolower($this->adapterType));
-    if ( ! class_exists($className))
-    {
-      throw new \Exception(
-        "Unsupported display type '{$this->adapterType}'." 
-        . " Create a custom adapter in '/component/adapter/view/' to enable support."
-      );
-    }
-    
+		$className = '\\component\\adapter\\view\\' . ucfirst(strtolower($this->adapterType));
+		if ( ! class_exists($className))
+		{
+			throw new \Exception(
+				"Unsupported display type '{$this->adapterType}'." 
+				. " Create a custom adapter in '/component/adapter/view/' to enable support."
+				);
+		}
+		
     // Build adapter intput.
-    $input = array(
-      'template' => $this->template,
-      'templateDirectory' => $this->templateDirectory,
-      'globals' => self::$globals,
-      'data' => $this->_data
-    );
-    
+		$input = array(
+			'template' => $this->template,
+			'templateDirectory' => $this->templateDirectory,
+			'globals' => self::$globals,
+			'data' => $this->_data
+			);
+		
     // Build adapter and generate output.
-    $adapter = new $className($input);
-    $adapter->getOutput();
-    
+		$adapter = new $className($input);
+		$adapter->getOutput();
+		
 		return TRUE;
 	}
 	
