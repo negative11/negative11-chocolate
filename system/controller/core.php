@@ -6,11 +6,6 @@
 namespace controller;
 
 abstract class Core {
-
-	public function __isset($arg) {
-
-	}
-
 	/**
 	 * Whether this Controller should be loaded.
 	 * This can be overridden in extending classes to enable/disable
