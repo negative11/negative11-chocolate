@@ -2,10 +2,9 @@
 /**
  * Core engine of framework.
  */
-final class Core
-{
+final class Core {
 	/**
-	 * When errors occur, we want to ignore any template draws other 
+	 * When errors occur, we want to ignore any template draws other
 	 * than our error handlers.
 	 */
 	public static $draw = TRUE;
@@ -15,8 +14,7 @@ final class Core
 	 *
 	 * @param $class
 	 */
-	public static function autoload($class)
-	{
+	public static function autoload($class) {
 		/**
 		 * All files are loaded by namespace.
 		 */
@@ -27,13 +25,11 @@ final class Core
 	/**
 	 * Handles display of 404 Page Not Found errors
 	 */
-	public static function error404()
-	{
-    if ( ! headers_sent())
-		{
-      header('HTTP/1.0 404 Not Found');
-    }
-    
+	public static function error404() {
+		if (!headers_sent()) {
+			header('HTTP/1.0 404 Not Found');
+		}
+
 		new \controller\error\_404;
 
 		// Shut all other Views down.
@@ -45,8 +41,7 @@ final class Core
 	/**
 	 * Initialize the framework.
 	 */
-	public static function initialize()
-	{
+	public static function initialize() {
 		// Start buffer
 		ob_start();
 
@@ -59,31 +54,28 @@ final class Core
 		// Provide framework with a session.
 		new component\Session;
 	}
-  
-  public static function initializeErrorHandler()
-  {
-    // Set custom error/exception handlers
+
+	public static function initializeErrorHandler() {
+		// Set custom error/exception handlers
 		set_error_handler(array('FrameworkError', 'handler'));
 		set_exception_handler(array('FrameworkError', 'handler'));
 		register_shutdown_function(array(__CLASS__, 'shutdown'));
-  }
+	}
 
 	/**
 	 * Run the framework.
-	 * 
+	 *
 	 * @static
 	 * @return bool
 	 */
-	public static function run()
-	{
+	public static function run() {
 		// Router determines controller, method, and arguments
 		Router::current();
 
 		// Load controller if it exists
 		$exists = Loader::get('controller' . DIRECTORY_SEPARATOR . Router::$controller);
 
-		if ($exists)
-		{
+		if ($exists) {
 			return self::runController(Router::$controller);
 		}
 
@@ -93,12 +85,11 @@ final class Core
 
 	/**
 	 * Execute specified Controller.
-	 * 
+	 *
 	 * @param string $controller
 	 * @return boolean
 	 */
-	private static function runController($controller)
-	{
+	private static function runController($controller) {
 		$controller = '\controller\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $controller);
 
 		$object = new $controller;
@@ -106,17 +97,15 @@ final class Core
 		// Check for default/hidden methods
 		$hidden = (bool) (substr(Router::$method, 0, 1) === '_');
 
-		// Ensure that the controller method is callable		
+		// Ensure that the controller method is callable
 		$method = array($object, Router::$method);
 
 		// Ensure that controller is enabled.
-		if (!$controller::ENABLED)
-		{
+		if (!$controller::ENABLED) {
 			throw new \Exception('Controller is disabled.');
 		}
 
-		if (is_callable($method) && $hidden === FALSE)
-		{
+		if (is_callable($method) && $hidden === FALSE) {
 			// Run controller method
 			call_user_func_array($method, Router::$arguments);
 			return TRUE;
@@ -133,23 +122,21 @@ final class Core
 	 * Also acts as last-ditch effort to grab fatal errors to display
 	 * debugger.
 	 */
-	public static function shutdown()
-	{
+	public static function shutdown() {
 		// If an error occurred, we'll call our handler.
 		$error = error_get_last();
 
-		if (isset($error))
-		{
+		if (isset($error)) {
 			/*
-			 * We must call directly.
-			 * Throwing Exception will yield:
-			 * Exception thrown without a stack frame in Unknown on line 0
-			 */
+				 * We must call directly.
+				 * Throwing Exception will yield:
+				 * Exception thrown without a stack frame in Unknown on line 0
+			*/
 			FrameworkError::handler(
-				$error['type'], 
-				$error['message'], 
-				$error['file'], 
-				$error['line'], 
+				$error['type'],
+				$error['message'],
+				$error['file'],
+				$error['line'],
 				array('Core::shutdown()')
 			);
 		}
@@ -164,11 +151,9 @@ final class Core
 	 *
 	 * @param ... ... ...
 	 */
-	public static function dump()
-	{
-    // Do not display in production mode.
-		if ( ! IN_PRODUCTION)
-		{
+	public static function dump() {
+		// Do not display in production mode.
+		if (!IN_PRODUCTION) {
 			$arguments = func_get_args();
 
 			$dump = new component\View('dump');
@@ -177,28 +162,26 @@ final class Core
 			$dump->display();
 		}
 	}
-  
-  /**
-   * Outputs any number of supplied arguments using self::dump and exits immediately.
-   * This haults execution of the framework.
-   */
-  public static function fault()
-  {
-    // Get caller in order to report where fault was triggered.
-    $stack = debug_backtrace();
-    $caller = array_shift($stack);
-    
-    // Issue warning. 
-    echo "Core::fault() triggered by {$caller['file']} on line {$caller['line']}.";
-    
-    // Output any arguments received.
-    $arguments = func_get_args();
-    foreach ($arguments as $argument)
-    {
-      self::dump($argument);
-    }
 
-    // Halt.
-    exit;
-  }
+	/**
+	 * Outputs any number of supplied arguments using self::dump and exits immediately.
+	 * This haults execution of the framework.
+	 */
+	public static function fault() {
+		// Get caller in order to report where fault was triggered.
+		$stack = debug_backtrace();
+		$caller = array_shift($stack);
+
+		// Issue warning.
+		echo "Core::fault() triggered by {$caller['file']} on line {$caller['line']}.";
+
+		// Output any arguments received.
+		$arguments = func_get_args();
+		foreach ($arguments as $argument) {
+			self::dump($argument);
+		}
+
+		// Halt.
+		exit;
+	}
 }

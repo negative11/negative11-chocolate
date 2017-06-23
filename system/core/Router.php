@@ -1,12 +1,11 @@
 <?php
 /**
- * The router determines which controller should be invoked by the 
+ * The router determines which controller should be invoked by the
  * current URI request.
  */
-final class Router
-{
+final class Router {
 	/**
-	 * Components extracted from URI and used by core to load 
+	 * Components extracted from URI and used by core to load
 	 * controllers.
 	 */
 	public static $controller;
@@ -14,30 +13,25 @@ final class Router
 	public static $arguments = array();
 
 	/**
-	 * Determines the appropriate controller, method, and arguments 
+	 * Determines the appropriate controller, method, and arguments
 	 * from the current URI request.
 	 * Where necessary, defaults will be employed.
 	 * Values are stored in local static members for use by the core.
 	 */
-	public static function current()
-	{
+	public static function current() {
 		$current = self::getRequestPath();
 
 		// Are we being run from command line?
-		if (PHP_SAPI === 'cli')
-		{
+		if (PHP_SAPI === 'cli') {
 			// $argv and $argc are disabled by default in some configurations.
 			$argc = isset($argc) ? $argc : $_SERVER['argc'];
 
-			if ($argc > 0)
-			{
+			if ($argc > 0) {
 				$args = isset($argv) ? $argv : $_SERVER['argv'];
 
 				// Merge all cli arguments as if they were in a uri from web context.
 				$current = implode('/', $args);
-			}
-			else
-			{
+			} else {
 				$current = self::getRequestPath();
 			}
 		}
@@ -53,8 +47,7 @@ final class Router
 
 		// Remove front controller from URI if present (depends on variable used)
 		$frontController = \Config::get('core.front_controller') . FILE_EXTENSION;
-		if (substr($current, 0, (strlen($frontController))) == $frontController)
-		{
+		if (substr($current, 0, (strlen($frontController))) == $frontController) {
 			$current = substr($current, (strlen($frontController)));
 		}
 
@@ -64,28 +57,21 @@ final class Router
 		// Check for rewrites matching configuration values.
 		$matched = $current;
 		$rewrites = \Config::get('rewrites');
-		if (!empty($rewrites))
-		{
-			foreach ($rewrites as $match => $replace)
-			{
+		if (!empty($rewrites)) {
+			foreach ($rewrites as $match => $replace) {
 				$match = trim($match, '/');
 
 				// Exact match?
-				if ($match == $current)
-				{
+				if ($match == $current) {
 					$matched = $replace;
 				}
 
 				// Regex match?
-				elseif (preg_match('#^' . $match . '$#u', $current))
-				{
-					if (strpos($replace, '$'))
-					{
+				elseif (preg_match('#^' . $match . '$#u', $current)) {
+					if (strpos($replace, '$')) {
 						// Replacement requires arguments that were parsed during match.
 						$matched = preg_replace('#^' . $match . '$#u', $replace, $current);
-					}
-					else
-					{
+					} else {
 						// Found match, no parsed arguments required.
 						$matched = $replace;
 					}
@@ -95,72 +81,60 @@ final class Router
 		$current = $matched;
 
 		$parts = array();
-		if (strlen($current) > 0)
-		{
+
+		if (strlen($current) > 0) {
 			$parts = explode('/', $current);
 		}
 
-		if (empty($parts))
-		{
+		if (empty($parts)) {
 			self::$controller = \Config::get('core.default_controller');
-		}
-		else
-		{
+		} else {
 			$controller = '';
-			while (count($parts))
-			{
+			while (count($parts)) {
 				$controller .= array_shift($parts);
 
-				if (Loader::search('controller' . DIRECTORY_SEPARATOR . $controller))
-				{
+				if (Loader::search('controller' . DIRECTORY_SEPARATOR . $controller)) {
 					self::$controller = $controller;
 
-					if (count($parts))
-					{
+					if (count($parts)) {
 						self::$method = array_shift($parts);
 					}
 
-					if (count($parts))
-					{
+					if (count($parts)) {
 						self::$arguments = $parts;
 					}
-				}
-				else
-				{
+				} else {
 					$controller .= DIRECTORY_SEPARATOR;
 				}
 			}
 		}
 
-		if (empty(self::$method))
-		{
+		if (empty(self::$method)) {
 			self::$method = \Config::get('core.default_controller_method');
 		}
 	}
 
 	/**
 	 * Return request path using preferred $_SERVER variable.
-	 * 
+	 *
 	 * @note You may need to change the variable set in parameters.php that is used to determine
-	 * the path. Some $_SERVER vars are not consistent across installations, .htaccess files, 
+	 * the path. Some $_SERVER vars are not consistent across installations, .htaccess files,
 	 * etc.
 	 */
-	private static function getRequestPath()
-	{
-		switch (CORE_SERVER_VAR)
-		{
-			case 'REQUEST_URI':
-				$useVar = strtok($_SERVER['REQUEST_URI'], '?');
-				break;
+	private static function getRequestPath() {
+		switch (CORE_SERVER_VAR) {
+		case 'REQUEST_URI':
+			$useVar = strtok($_SERVER['REQUEST_URI'], '?');
+			break;
 
-			case 'PATH_INFO':
-				$useVar = $_SERVER['PATH_INFO'];
-				break;
+		case 'PATH_INFO':
+			$useVar = $_SERVER['PATH_INFO'];
+			break;
 
-			case 'PHP_SELF':
-			default:
-				$useVar = $_SERVER['PHP_SELF'];
-				break;
+		case 'PHP_SELF':
+		default:
+			$useVar = $_SERVER['PHP_SELF'];
+			break;
 		}
 
 		return $useVar;
@@ -168,17 +142,15 @@ final class Router
 
 	/**
 	 * Redirect to another location.
-	 * 
+	 *
 	 * @param $location
 	 */
-	public static function redirect($location = '/')
-	{
-    if ( ! headers_sent())
-    {
-      header('HTTP/1.1 302 Moved Temporarily');
-      header("Location: {$location}");
-    }
-    
+	public static function redirect($location = '/') {
+		if (!headers_sent()) {
+			header('HTTP/1.1 302 Moved Temporarily');
+			header("Location: {$location}");
+		}
+
 		exit;
 	}
 }

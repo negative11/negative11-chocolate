@@ -55,7 +55,7 @@ define('SYSTEM_DIRECTORY', ENVIRONMENT_ROOT . DIRECTORY_SEPARATOR . 'system');
 define('SYSTEM_CORE_DIRECTORY', SYSTEM_DIRECTORY . DIRECTORY_SEPARATOR . 'core');
 
 /**
- * Core configuration paramters.
+ * Core configuration parameters.
  * - Front controller.
  * - Default controller loaded.
  * - Default controller method when none is provided.
