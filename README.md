@@ -2,11 +2,14 @@
 
 Welcome to the negative(-11) PHP MVC Framework. You are using version 2 (Chocolate).
 
-## Support
+## Deprecation & Support
 
-This project is currently unmaintained other than for security purposes. If you have discovered a
-security issue, please submit an issue or pull request. The repository is preserved here for 
-documentation purposes.
+This project is superseded by [php-microframework](https://github.com/johnsquibb/php-microframework)
+.
+
+This project is no longer maintained except for security purposes. If you have discovered a security
+issue, please submit an issue or pull request. This repository will remain here for documentation
+purposes.
 
 ## Features
 
